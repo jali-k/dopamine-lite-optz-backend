@@ -1,25 +1,30 @@
 import { Table, Model, Column, DataType, HasMany } from 'sequelize-typescript';
 import { Lecture } from './Lecture';
 import { Note } from './Note';
-import { CreateClassDTO, IClass } from '../types/class.types';
+import { IAccessGroup } from '../types/accessGroup.types';
 
 @Table({
-  tableName: 'classes',
+  tableName: 'access_groups',
   timestamps: true,
 })
-export class Class extends Model<IClass, CreateClassDTO> {
+export class AccessGroup extends Model<IAccessGroup> {
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.STRING,
     primaryKey: true,
-    autoIncrement: true,
   })
-  classID!: number;
+  accessGroupID!: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
   name!: string;
+
+  @Column({
+    type: DataType.ARRAY(DataType.STRING),
+    defaultValue: [],
+  })
+  accessList!: string[];
 
   @HasMany(() => Lecture)
   lectures!: Lecture[];
