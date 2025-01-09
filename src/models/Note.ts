@@ -1,13 +1,14 @@
 import { Table, Model, Column, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { Class } from './Class';
+import { Class } from '../models/Class';
 import { AccessGroup } from './AccessGroup';
-import { INote, Month, Lesson } from '../types/note.types';
+import { CreateNoteDTO, INote } from '../types/note.types';
+import { Lesson, Month } from '../types/lecture.types';
 
 @Table({
   tableName: 'notes',
   timestamps: true,
 })
-export class Note extends Model<INote> {
+export class Note extends Model<INote, CreateNoteDTO> {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
@@ -47,13 +48,13 @@ export class Note extends Model<INote> {
   accessGroupID!: string;
 
   @Column({
-    type: DataType.ENUM(...Object.values(Month)),
+    type: DataType.ENUM(...Object.values(Month).filter(value => typeof value === 'string')),
     allowNull: false,
   })
   belongingMonth!: Month;
 
   @Column({
-    type: DataType.ENUM(...Object.values(Lesson)),
+    type: DataType.ENUM(...Object.values(Lesson).filter(value => typeof value === 'string')),
     allowNull: false,
   })
   belongingLesson!: Lesson;
